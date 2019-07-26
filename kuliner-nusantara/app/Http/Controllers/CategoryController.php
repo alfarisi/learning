@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Category::All();
     }
 
     /**
@@ -35,7 +35,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $req = json_decode($request->getContent());
+		
+		$category = new Category();
+		$category->title = $req->title;
+		$category->description = $req->description;
+		$category->save();
+		
+		$resp = $req;
+		$resp->id = $category->id;
+		$resp->message = "Success";
+
+		return response()->json($resp, 201);
     }
 
     /**
@@ -44,9 +55,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Category $category, $id)
     {
-        //
+        return $category->find($id);
     }
 
     /**
@@ -67,9 +78,20 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category, $id)
     {
-        //
+        $req = json_decode($request->getContent());
+		
+		$cat = $category->find($id);
+		$cat->title = $req->title;
+		$cat->description = $req->description;
+		$cat->save();
+		
+		$resp = $req;
+		$resp->id = $id;
+		$resp->message = "Success";
+
+		return response()->json($resp, 200);
     }
 
     /**
@@ -78,8 +100,9 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category, $id)
     {
-        //
+        $category->find($id)->delete();
+        return response('Deleted', 204);
     }
 }

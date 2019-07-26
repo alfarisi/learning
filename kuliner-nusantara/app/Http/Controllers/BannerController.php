@@ -14,7 +14,7 @@ class BannerController extends Controller
      */
     public function index()
     {
-        //
+        return Banner::All();
     }
 
     /**
@@ -35,7 +35,21 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $req = json_decode($request->getContent());
+		
+		$banner = new Banner();
+		$banner->title = $req->title;
+		$banner->description = $req->description;
+		$banner->imageurl = $req->imageurl;
+		$banner->clickurl = $req->clickurl;
+		$banner->is_active = $req->is_active;
+		$banner->save();
+		
+		$resp = $req;
+		$resp->id = $banner->id;
+		$resp->message = "Success";
+
+		return response()->json($resp, 201);
     }
 
     /**
@@ -44,9 +58,9 @@ class BannerController extends Controller
      * @param  \App\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function show(Banner $banner)
+    public function show(Banner $banner, $id)
     {
-        //
+        return $banner->find($id);
     }
 
     /**
@@ -67,9 +81,23 @@ class BannerController extends Controller
      * @param  \App\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Banner $banner)
+    public function update(Request $request, Banner $banner, $id)
     {
-        //
+        $req = json_decode($request->getContent());
+		
+		$bnr = $banner->find($id);
+		$bnr->title = $req->title;
+		$bnr->description = $req->description;
+		$bnr->imageurl = $req->imageurl;
+		$bnr->clickurl = $req->clickurl;
+		$bnr->is_active = $req->is_active;
+		$bnr->save();
+		
+		$resp = $req;
+		$resp->id = $id;
+		$resp->message = "Success";
+
+		return response()->json($resp, 200);
     }
 
     /**
@@ -78,8 +106,9 @@ class BannerController extends Controller
      * @param  \App\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Banner $banner)
+    public function destroy(Banner $banner, $id)
     {
-        //
+        $banner->find($id)->delete();
+        return response('Deleted', 204);
     }
 }
