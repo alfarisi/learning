@@ -59,9 +59,9 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Product $product, $id)
     {
-        //
+        return $product->find($id);
     }
 
     /**
@@ -82,9 +82,24 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product, $id)
     {
-        //
+        $prod = $product->find($id);
+		$prod->name = $request->input('name');
+		$prod->description = $request->input('description');
+		$prod->imagefile = $request->input('imagefile');
+		$prod->category_id = $request->input('category_id');
+		$prod->price = $request->input('price');
+		$prod->qty_stock = $request->input('qty_stock');
+		$prod->imagefile = $request->input('imagefile');
+		$prod->is_halal = $request->input('is_halal');
+		$prod->is_active = $request->input('is_active');
+		$prod->save();
+		
+		$resp = $prod;
+		$resp->message = "Success";
+
+		return response()->json($resp, 200);
     }
 
     /**
@@ -93,8 +108,9 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, $id)
     {
-        //
+        $product->find($id)->delete();
+        return response('Deleted', 204);
     }
 }
