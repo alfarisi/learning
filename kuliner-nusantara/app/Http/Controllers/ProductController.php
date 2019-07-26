@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Product::All();
     }
 
     /**
@@ -35,7 +35,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$product = new Product();
+		$product->name = $request->input('name');
+		$product->description = $request->input('description');
+		$product->imagefile = $request->input('imagefile');
+		$product->category_id = $request->input('category_id');
+		$product->price = $request->input('price');
+		$product->qty_stock = $request->input('qty_stock');
+		$product->imagefile = $request->input('imagefile');
+		$product->is_halal = $request->input('is_halal');
+		$product->is_active = $request->input('is_active');
+		$product->save();
+		
+		$resp = $product;
+		$resp->message = "Success";
+
+		return response()->json($resp, 201);
     }
 
     /**

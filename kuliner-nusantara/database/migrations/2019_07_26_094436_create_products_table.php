@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('description');
+            $table->string('imagefile');
             $table->unsignedInteger('category_id')->references('id')->on('categories')->onUpdate('cascade');
             $table->unsignedTinyInteger('rating')->default(0);
             $table->unsignedDecimal('price', 10, 0);

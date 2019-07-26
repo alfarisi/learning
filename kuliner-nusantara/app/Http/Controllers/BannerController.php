@@ -35,18 +35,15 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $req = json_decode($request->getContent());
-		
 		$banner = new Banner();
-		$banner->title = $req->title;
-		$banner->description = $req->description;
-		$banner->imageurl = $req->imageurl;
-		$banner->clickurl = $req->clickurl;
-		$banner->is_active = $req->is_active;
+		$banner->title = $request->input('title');
+		$banner->description = $request->input('description');
+		$banner->imagefile = $request->input('imagefile');
+		$banner->clickurl = $request->input('clickurl');
+		$banner->is_active = $request->input('is_active');
 		$banner->save();
 		
-		$resp = $req;
-		$resp->id = $banner->id;
+		$resp = $banner;
 		$resp->message = "Success";
 
 		return response()->json($resp, 201);
@@ -83,18 +80,15 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner, $id)
     {
-        $req = json_decode($request->getContent());
-		
 		$bnr = $banner->find($id);
-		$bnr->title = $req->title;
-		$bnr->description = $req->description;
-		$bnr->imageurl = $req->imageurl;
-		$bnr->clickurl = $req->clickurl;
-		$bnr->is_active = $req->is_active;
+		$bnr->title = $request->input('title');
+		$bnr->description = $request->input('description');
+		$bnr->imagefile = $request->input('imagefile');
+		$bnr->clickurl = $request->input('clickurl');
+		$bnr->is_active = $request->input('is_active');
 		$bnr->save();
 		
-		$resp = $req;
-		$resp->id = $id;
+		$resp = $bnr;
 		$resp->message = "Success";
 
 		return response()->json($resp, 200);

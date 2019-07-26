@@ -35,15 +35,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $req = json_decode($request->getContent());
-		
 		$category = new Category();
-		$category->title = $req->title;
-		$category->description = $req->description;
+		$category->title = $request->input('title');
+		$category->description = $request->input('description');
 		$category->save();
 		
-		$resp = $req;
-		$resp->id = $category->id;
+		$resp = $category;
 		$resp->message = "Success";
 
 		return response()->json($resp, 201);
@@ -80,15 +77,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category, $id)
     {
-        $req = json_decode($request->getContent());
-		
 		$cat = $category->find($id);
-		$cat->title = $req->title;
-		$cat->description = $req->description;
+		$cat->title = $request->input('title');
+		$cat->description = $request->input('description');
 		$cat->save();
 		
-		$resp = $req;
-		$resp->id = $id;
+		$resp = $cat;
 		$resp->message = "Success";
 
 		return response()->json($resp, 200);
